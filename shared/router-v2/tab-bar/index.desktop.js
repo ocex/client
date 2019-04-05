@@ -107,9 +107,6 @@ class TabBar extends React.PureComponent<Props, State> {
                   style={styles.avatar}
                 />
                 <>
-                  <Kb.Text className="username" type="BodyTinySemibold" style={styles.username}>
-                    Hi {p.username}!
-                  </Kb.Text>
                   <Kb.Icon
                     type="iconfont-arrow-down"
                     color={Styles.globalColors.blue3}
@@ -142,9 +139,6 @@ class TabBar extends React.PureComponent<Props, State> {
                 >
                   <Kb.Box2 className="tab-highlight" direction="vertical" fullHeight={true} />
                   <Kb.Icon className="tab-icon" type={data[t].icon} sizeType="Big" />
-                  <Kb.Text className="tab-label" type="BodySmallSemibold">
-                    {data[t].label}
-                  </Kb.Text>
                   {!!p.badgeNumbers[t] && <Kb.Badge className="tab-badge" badgeNumber={p.badgeNumbers[t]} />}
                 </Kb.Box2>
               </Kb.WithTooltip>

@@ -128,6 +128,8 @@ export default function makeMenu(window: any) {
     ]
     // $FlowIssue not sure yet
     const menu = SafeElectron.Menu.buildFromTemplate(template)
+    window.setAutoHideMenuBar(true)
+    window.setMenuBarVisibility(false)
     window.setMenu(menu)
   }
 }
