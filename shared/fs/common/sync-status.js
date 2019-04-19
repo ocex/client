@@ -20,7 +20,7 @@ function getIcon(props: Props): Kb.IconType {
     case 'online-only':
       return 'iconfont-cloud'
     case 'synced':
-      return 'iconfont-proof-good'
+      return 'iconfont-success'
     case 'sync-error':
       return 'iconfont-exclamation'
     default:
@@ -43,7 +43,7 @@ function getColor(props: Props) {
       return Styles.globalColors.red
     default:
       // This case should never be reached.
-      return Styles.globalColors.red
+      return Styles.globalColors.grey
   }
 }
 

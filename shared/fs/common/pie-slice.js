@@ -32,47 +32,56 @@ const PieSlice = (props: Props) => {
     <PieSliceDefault degrees={props.degrees} />
   )
 }
-
+const pieSize = Styles.isMobile ? 16 : 12
+const pieHalfSize = Styles.isMobile ? 8 : 6
 const stylePieHalf = {
-  height: 12,
+  height: pieSize,
   position: 'absolute',
-  width: 6,
+  width: pieHalfSize,
 }
 const styles = Styles.styleSheetCreate({
   container: {
-    height: 12,
+    height: pieSize,
     position: 'relative',
-    width: 12,
+    width: pieSize,
   },
   left1: {
     ...stylePieHalf,
-    backgroundColor: Styles.globalColors.white,
+    backgroundColor: Styles.globalColors.lightGrey,
+    // -1 is a workaround for a rendering issue where the blue part of the
+    // pie is not entirely hidden by the white part
+    borderBottomLeftRadius: pieHalfSize - 1,
+    borderTopLeftRadius: pieHalfSize - 1,
     left: 0,
   },
   left2: {
     ...stylePieHalf,
     backgroundColor: Styles.globalColors.blue,
-    borderBottomLeftRadius: 6,
-    borderTopLeftRadius: 6,
+    borderBottomLeftRadius: pieHalfSize,
+    borderTopLeftRadius: pieHalfSize,
     left: 0,
   },
   right1: {
     ...stylePieHalf,
-    backgroundColor: Styles.globalColors.white,
-    left: 6,
+    backgroundColor: Styles.globalColors.lightGrey,
+    // -1 is a workaround for a rendering issue where the blue part of the
+    // pie is not entirely hidden by the white part
+    borderBottomRightRadius: pieHalfSize - 1,
+    borderTopRightRadius: pieHalfSize - 1,
+    left: pieHalfSize,
   },
   right2: {
     ...stylePieHalf,
     backgroundColor: Styles.globalColors.blue,
-    borderBottomRightRadius: 6,
-    borderTopRightRadius: 6,
-    left: 6,
+    borderBottomRightRadius: pieHalfSize,
+    borderTopRightRadius: pieHalfSize,
+    left: pieHalfSize,
   },
   rotateContainer: {
-    height: 12,
+    height: pieSize,
     left: 0,
     position: 'absolute',
-    width: 12,
+    width: pieSize,
   },
 })
 
