@@ -150,6 +150,9 @@ func (c *CmdSimpleFSSyncShow) Run() error {
 			}
 			ui.Printf("\n")
 		}
+		printPrefetchStatus(
+			ui, res.OverallStatus.PrefetchStatus,
+			res.OverallStatus.PrefetchProgress, "")
 		printLocalStats(ui, res.OverallStatus)
 	} else {
 		res, err := cli.SimpleFSFolderSyncConfigAndStatus(ctx, c.path)
