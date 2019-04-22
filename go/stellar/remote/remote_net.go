@@ -129,3 +129,7 @@ func (r *RemoteNet) NetworkOptions(ctx context.Context) (stellar1.NetworkOptions
 func (r *RemoteNet) DetailsPlusPayments(ctx context.Context, accountID stellar1.AccountID) (stellar1.DetailsPlusPayments, error) {
 	return DetailsPlusPayments(ctx, r.G(), accountID)
 }
+
+func (r *RemoteNet) FindPaymentPath(mctx libkb.MetaContext, query stellar1.PaymentPathQuery) (stellar1.PaymentPath, error) {
+	return FindPaymentPath(mctx, query)
+}

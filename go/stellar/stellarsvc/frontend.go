@@ -1085,3 +1085,25 @@ func (s *Server) AirdropStatusLocal(ctx context.Context, sessionID int) (status 
 
 	return stellar.AirdropStatus(mctx)
 }
+
+func (s *Server) FindPaymentPathLocal(ctx context.Context, arg stellar1.FindPaymentPathLocalArg) (res stellar1.PaymentPath, err error) {
+	mctx, fin, err := s.Preamble(ctx, preambleArg{
+		RPCName:       "FindPaymentPathLocal",
+		Err:           &err,
+		RequireWallet: true,
+	})
+	defer fin()
+	if err != nil {
+		return stellar1.PaymentPath{}, err
+	}
+
+	recipient, err := stellar.LookupRecipient(mctx, stellarcommon.RecipientInput(arg.To), false)
+	if err != nil {
+		return stellar1.PaymentPath{}, err
+	}
+	if recipient.AccountID == nil {
+		return stellar1.PaymentPath{}, errors.New("cannot send a path payment to a user without a stellar account")
+	}
+
+	return stellar.FindPaymentPath(mctx, s.remoter, *recipient.AccountID, arg.SourceAsset, arg.DestinationAsset, arg.Amount)
+}

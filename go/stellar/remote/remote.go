@@ -1052,3 +1052,24 @@ func AirdropStatus(mctx libkb.MetaContext) (AirdropStatusAPI, error) {
 	}
 	return status, nil
 }
+
+type findPaymentPathResult struct {
+	libkb.AppStatusEmbed
+	Result stellar1.PaymentPath `json:"payment_path"`
+}
+
+func FindPaymentPath(mctx libkb.MetaContext, query stellar1.PaymentPathQuery) (stellar1.PaymentPath, error) {
+	payload := make(libkb.JSONPayload)
+	payload["query"] = query
+	apiArg := libkb.APIArg{
+		Endpoint:    "stellar/find_payment_path",
+		SessionType: libkb.APISessionTypeREQUIRED,
+		JSONPayload: payload,
+	}
+
+	var res findPaymentPathResult
+	if err := mctx.G().API.PostDecode(mctx, apiArg, &res); err != nil {
+		return stellar1.PaymentPath{}, err
+	}
+	return res.Result, nil
+}

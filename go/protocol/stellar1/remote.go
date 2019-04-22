@@ -804,6 +804,28 @@ func (o DetailsPlusPayments) DeepCopy() DetailsPlusPayments {
 	}
 }
 
+type PaymentPathQuery struct {
+	To               AccountID `codec:"to" json:"to"`
+	SourceAsset      *Asset    `codec:"sourceAsset,omitempty" json:"sourceAsset,omitempty"`
+	DestinationAsset Asset     `codec:"destinationAsset" json:"destinationAsset"`
+	Amount           string    `codec:"amount" json:"amount"`
+}
+
+func (o PaymentPathQuery) DeepCopy() PaymentPathQuery {
+	return PaymentPathQuery{
+		To: o.To.DeepCopy(),
+		SourceAsset: (func(x *Asset) *Asset {
+			if x == nil {
+				return nil
+			}
+			tmp := (*x).DeepCopy()
+			return &tmp
+		})(o.SourceAsset),
+		DestinationAsset: o.DestinationAsset.DeepCopy(),
+		Amount:           o.Amount,
+	}
+}
+
 type BalancesArg struct {
 	Caller    keybase1.UserVersion `codec:"caller" json:"caller"`
 	AccountID AccountID            `codec:"accountID" json:"accountID"`
@@ -922,6 +944,11 @@ type AssetSearchArg struct {
 	IssuerAccountID string `codec:"issuerAccountID" json:"issuerAccountID"`
 }
 
+type FindPaymentPathArg struct {
+	Caller keybase1.UserVersion `codec:"caller" json:"caller"`
+	Query  PaymentPathQuery     `codec:"query" json:"query"`
+}
+
 type RemoteInterface interface {
 	Balances(context.Context, BalancesArg) ([]Balance, error)
 	Details(context.Context, DetailsArg) (AccountDetails, error)
@@ -946,6 +973,7 @@ type RemoteInterface interface {
 	NetworkOptions(context.Context, keybase1.UserVersion) (NetworkOptions, error)
 	DetailsPlusPayments(context.Context, DetailsPlusPaymentsArg) (DetailsPlusPayments, error)
 	AssetSearch(context.Context, AssetSearchArg) ([]Asset, error)
+	FindPaymentPath(context.Context, FindPaymentPathArg) (PaymentPath, error)
 }
 
 func RemoteProtocol(i RemoteInterface) rpc.Protocol {
@@ -1292,6 +1320,21 @@ func RemoteProtocol(i RemoteInterface) rpc.Protocol {
 					return
 				},
 			},
+			"findPaymentPath": {
+				MakeArg: func() interface{} {
+					var ret [1]FindPaymentPathArg
+					return &ret
+				},
+				Handler: func(ctx context.Context, args interface{}) (ret interface{}, err error) {
+					typedArgs, ok := args.(*[1]FindPaymentPathArg)
+					if !ok {
+						err = rpc.NewTypeError((*[1]FindPaymentPathArg)(nil), args)
+						return
+					}
+					ret, err = i.FindPaymentPath(ctx, typedArgs[0])
+					return
+				},
+			},
 		},
 	}
 }
@@ -1415,5 +1458,10 @@ func (c RemoteClient) DetailsPlusPayments(ctx context.Context, __arg DetailsPlus
 
 func (c RemoteClient) AssetSearch(ctx context.Context, __arg AssetSearchArg) (res []Asset, err error) {
 	err = c.Cli.Call(ctx, "stellar.1.remote.assetSearch", []interface{}{__arg}, &res)
+	return
+}
+
+func (c RemoteClient) FindPaymentPath(ctx context.Context, __arg FindPaymentPathArg) (res PaymentPath, err error) {
+	err = c.Cli.Call(ctx, "stellar.1.remote.findPaymentPath", []interface{}{__arg}, &res)
 	return
 }

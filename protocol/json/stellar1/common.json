@@ -385,6 +385,35 @@
         "USER_1",
         "MOBILE_2"
       ]
+    },
+    {
+      "type": "record",
+      "name": "PaymentPath",
+      "fields": [
+        {
+          "type": "string",
+          "name": "sourceAmount"
+        },
+        {
+          "type": "Asset",
+          "name": "sourceAsset"
+        },
+        {
+          "type": {
+            "type": "array",
+            "items": "Asset"
+          },
+          "name": "path"
+        },
+        {
+          "type": "string",
+          "name": "destinationAmount"
+        },
+        {
+          "type": "Asset",
+          "name": "destinationAsset"
+        }
+      ]
     }
   ],
   "messages": {},
