@@ -17,6 +17,7 @@ import {fsTab} from '../../../constants/tabs'
 type OwnProps = {|
   floatingMenuProps: FloatingMenuProps,
   path: Types.Path,
+  position?: 'row' | 'header',
   routePath: I.List<string>,
 |}
 
@@ -29,7 +30,7 @@ const mapStateToProps = (state, {path}) => ({
   _view: state.fs.pathItemActionMenu.view,
 })
 
-const mapDispatchToProps = (dispatch, {path, routePath}: OwnProps) => ({
+const mapDispatchToProps = (dispatch, {path, position, routePath}: OwnProps) => ({
   _cancel: (key: string) => dispatch(FsGen.createCancelDownload({key})),
   _confirmSaveMedia: (toCancel: ?string) =>
     dispatch(FsGen.createSetPathItemActionMenuView({view: 'confirm-save-media'})),
@@ -40,7 +41,7 @@ const mapDispatchToProps = (dispatch, {path, routePath}: OwnProps) => ({
     dispatch(
       RouteTreeGen.createNavigateTo({
         parentPath: [fsTab],
-        path: [{props: {path}, selected: 'reallyDelete'}],
+        path: [{props: {path, position}, selected: 'reallyDelete'}],
       })
     )
   },
@@ -148,6 +149,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ignoreTlf: layout.ignoreTlf ? c(dispatchProps._ignoreTlf) : null,
     moveOrCopy: flags.moveOrCopy && layout.moveOrCopy ? c(dispatchProps._moveOrCopy) : null,
     pathItemType: stateProps._pathItem.type,
+    position: ownProps.position,
     saveMedia: layout.saveMedia ? getSaveMedia(stateProps, dispatchProps, c) : null,
     showInSystemFileManager:
       layout.showInSystemFileManager && stateProps._sfmiEnabled

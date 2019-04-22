@@ -11,24 +11,24 @@ export type Props = {
   onBack: () => void,
   onDelete: () => void,
   path: Types.Path,
+  position?: 'row' | 'header',
   title: string,
 }
 
 class _ReallyDeleteFile extends React.PureComponent<Props> {
   componentDidUpdate(prevProps: Props) {
     prevProps._deleting && !this.props._deleting && this.props._onFinishDelete()
-    prevProps._deleting && !this.props._deleting && this.props.onBack()
   }
   render() {
     return (
       !!this.props.path && (
         <Kb.ConfirmModal
-          confirmText="Yes, delete it."
-          description="It will be gone forever."
+          confirmText="Yes, delete"
+          description="It will be deleted for everyone. This cannot be undone."
           header={<Kb.Icon type="iconfont-trash" sizeType="Big" color={Styles.globalColors.red} />}
           onCancel={this.props.onBack}
           onConfirm={this.props.onDelete}
-          prompt={`Are you sure you want to delete "${Types.pathToString(this.props.path)}"?`}
+          prompt={`Are you sure you want to delete "${Types.getPathName(this.props.path)}"?`}
           waitingKey={Constants.deleteWaitingKey}
         />
       )
