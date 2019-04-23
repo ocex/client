@@ -2151,10 +2151,7 @@
         },
         {
           "name": "sourceAsset",
-          "type": [
-            null,
-            "Asset"
-          ]
+          "type": "Asset"
         },
         {
           "name": "destinationAsset",

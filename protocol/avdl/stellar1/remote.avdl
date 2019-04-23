@@ -300,7 +300,7 @@ protocol remote {
 
   record PaymentPathQuery {
     AccountID to;
-    union{null, Asset} sourceAsset;
+    Asset sourceAsset;
     Asset destinationAsset;
     string amount;
   }
