@@ -299,7 +299,8 @@ protocol remote {
   array<Asset> assetSearch(string assetCode, string issuerAccountID);
 
   record PaymentPathQuery {
-    AccountID to;
+    AccountID source;
+    AccountID destination;
     Asset sourceAsset;
     Asset destinationAsset;
     string amount;
